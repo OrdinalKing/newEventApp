@@ -9,13 +9,22 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ui.myEvent.MyEventFragment;
 import com.ui.event.EventFragment;
 
@@ -24,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     ActionBarDrawerToggle drawer_toggle;
 
+    private TextView welcomeText;
+    private FirebaseAuth mAuth;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (drawer_toggle.onOptionsItemSelected(item)) {
@@ -35,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        setWelcomeName();
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -62,29 +78,11 @@ public class MainActivity extends AppCompatActivity {
         binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-//                    case R.id.home_id:
-//                    {
-//                        Toast.makeText(
-//                                MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    }
-//                    case R.id.error_id:
-//                    {
-//                        Toast.makeText(
-//                                MainActivity.this, "Report Error", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    }
-//                    case R.id.about_id:
-//                    {
-//                        Toast.makeText(
-//                                MainActivity.this, "About Us", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    }
-                    default:
-                        break;
+                int id = item.getItemId();
+                if (id == R.id.logout_id) {
+                    logout();
                 }
-                return false;
+                return true;
             }
         });
 
@@ -105,5 +103,33 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void logout() {
+        mAuth.signOut();
+        Toast.makeText(MainActivity.this, "Successfully logged out!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, StartActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    private void setWelcomeName(){
+        String id = mAuth.getCurrentUser().getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(id).child("username");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("MainActivity", dataSnapshot.getValue().toString());
+                welcomeText = findViewById(R.id.welcomeName);
+                welcomeText.setText("Welcome, " + dataSnapshot.getValue().toString());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

@@ -8,12 +8,26 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.ui.placeholder.EventData;
 import com.ui.placeholder.PlaceholderContent;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -65,7 +79,31 @@ public class EventFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyEventRecyclerViewAdapter(PlaceholderContent.ITEMS));
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference eventsRef = db.collection("events");
+
+            List<EventData> ITEMS = new ArrayList<>();
+            eventsRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    int id = 1;
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        String title = document.getString("title");
+                        String description = document.getString("description");
+                        String imageUrl = document.getString("image");
+                        ITEMS.add(new EventData(Integer.toString(id), title, description, imageUrl));
+                        id = id + 1;
+                    }
+                    recyclerView.setAdapter(new MyEventRecyclerViewAdapter(ITEMS));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@androidx.annotation.NonNull Exception e) {
+
+                }
+            });
+
         }
         return view;
     }

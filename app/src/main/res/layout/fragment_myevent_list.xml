@@ -7,5 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
+    android:scrollbars="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.ui.myEvent.MyEventFragment"
     tools:listitem="@layout/fragment_myevent" />

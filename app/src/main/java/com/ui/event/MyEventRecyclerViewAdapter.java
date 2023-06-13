@@ -4,12 +4,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.ui.placeholder.EventData;
 import com.ui.placeholder.PlaceholderContent;
 import com.example.myapplication.databinding.FragmentEventBinding;
 
@@ -22,9 +25,9 @@ import java.util.List;
  */
 public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecyclerViewAdapter.ViewHolder> {
 
-    private final List<PlaceholderContent.Event> mValues;
+    private final List<EventData> mValues;
 
-    public MyEventRecyclerViewAdapter(List<PlaceholderContent.Event> items) {
+    public MyEventRecyclerViewAdapter(List<EventData> items) {
         mValues = items;
     }
 
@@ -40,6 +43,8 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         holder.mItem = mValues.get(position);
         holder.eventHeadline.setText(mValues.get(position).name);
         holder.eventDetails.setText(mValues.get(position).details);
+        //holder.eventImageSrc.setImageURI(Uri.parse(mValues.get(position).imageUrl));
+        Picasso.get().load(mValues.get(position).imageUrl).into(holder.eventImageSrc);
     }
 
     @Override
@@ -50,12 +55,14 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView eventHeadline;
         public final TextView eventDetails;
-        public PlaceholderContent.Event mItem;
+        public final ImageView eventImageSrc;
+        public EventData mItem;
 
         public ViewHolder(FragmentEventBinding binding) {
             super(binding.getRoot());
             eventHeadline = binding.eventHeadline;
             eventDetails = binding.eventDetails;
+            eventImageSrc = binding.eventImageSrc;
         }
 
         @Override

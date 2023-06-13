@@ -2,16 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item android:id="@+id/home_id"
-            android:icon="@drawable/app_icon"
+            android:icon="@drawable/ic_home"
             android:title="@string/home"
             />
-        <item android:id="@+id/error_id"
-            android:icon="@drawable/app_icon"
-            android:title="@string/report_error"
+        <item android:id="@+id/notification_id"
+            android:icon="@drawable/ic_notification"
+            android:title="Notification"
             />
-        <item android:id="@+id/about_id"
-            android:icon="@drawable/app_icon"
-            android:title="@string/about_us"
+        <item android:id="@+id/create_event_id"
+            android:icon="@drawable/ic_event"
+            android:title="Create Event"
+            />
+        <item android:id="@+id/book_ticket_id"
+            android:icon="@drawable/ic_ticket"
+            android:title="Book Tickets"
+            />
+        <item android:id="@+id/logout_id"
+            android:icon="@drawable/ic_logout"
+            android:title="LogOut"
             />
     </group>
 </menu>
