@@ -156,7 +156,7 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
                         }
                     });
                     mItem.setShare(true);
-                    //adapter.notifyItemChanged(position);
+                    EventFragment.adapter.notifyItemChanged(position);
                 }
             }
         }

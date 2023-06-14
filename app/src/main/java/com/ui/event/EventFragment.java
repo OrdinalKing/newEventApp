@@ -41,6 +41,8 @@ public class EventFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
+    public static MyEventRecyclerViewAdapter adapter;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -122,7 +124,8 @@ public class EventFragment extends Fragment {
                                         }
                                     }
                                 }
-                                recyclerView.setAdapter(new MyEventRecyclerViewAdapter(ITEMS));
+                                adapter = new MyEventRecyclerViewAdapter(ITEMS);
+                                recyclerView.setAdapter(adapter);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -130,6 +133,10 @@ public class EventFragment extends Fragment {
                                 Log.w("firebase", "Error getting document", e);
                             }
                         });
+                    }
+                    else {
+                        adapter = new MyEventRecyclerViewAdapter(ITEMS);
+                        recyclerView.setAdapter(adapter);
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
