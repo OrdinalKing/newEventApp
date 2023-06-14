@@ -81,41 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        binding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                // Respond to drawer movement
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                // Respond to drawer open
-                // Bring the drawer layout to front
-
-                binding.drawerLayout.bringToFront();
-                // Update the layout
-                binding.drawerLayout.requestLayout();
-                binding.drawerLayout.invalidate();
-
-                Log.d("MainActivity", "Drawer opened");
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Respond to drawer close
-                binding.frameLayout.bringToFront();
-                binding.frameLayout.requestLayout();
-                binding.frameLayout.invalidate();
-                Log.d("MainActivity", "Drawer closed");
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                // Respond to drawer state changes
-            }
-        });
-
         binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
