@@ -36,6 +36,8 @@ public class MyEventFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
+    public static MyMyEventRecyclerViewAdapter adapter;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -66,7 +68,8 @@ public class MyEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myevent_list, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.myEventsList);
+
+        RecyclerView recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -92,7 +95,8 @@ public class MyEventFragment extends Fragment {
                                 ///  Last event  ///
                                 if (ITEMS.size() == eventlist.size())
                                 {
-                                    recyclerView.setAdapter(new MyMyEventRecyclerViewAdapter(ITEMS));
+                                    adapter = new MyMyEventRecyclerViewAdapter(ITEMS);
+                                    recyclerView.setAdapter(adapter);
                                 }
                             }
                         }).addOnFailureListener(new OnFailureListener() {
