@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.ui.TestFragment;
 import com.ui.myEvent.MyEventFragment;
 import com.ui.event.EventFragment;
+import com.ui.myEvent.MyEventGuestFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.myEvents) {
                 if (LoginActivity.isGuestMode != true)
                     replaceFragment(new MyEventFragment());
+                else
+                    replaceFragment(new MyEventGuestFragment());
 
             }
                else if (id == R.id.events) {

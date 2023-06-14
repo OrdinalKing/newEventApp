@@ -25,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private Button login;
     private Button guest;
+
+    private Button back;
     private TextView registerUser;
 
     private FirebaseAuth mAuth;
@@ -36,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         login = findViewById(R.id.login);
+        back = findViewById(R.id.back);
         registerUser = findViewById(R.id.register_user);
         guest = findViewById(R.id.guest);
 
@@ -53,6 +56,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 isGuestMode = true;
                 startActivity(new Intent(LoginActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             }
         });
 

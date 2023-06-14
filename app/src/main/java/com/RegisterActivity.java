@@ -32,6 +32,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private Button register;
+
+    private Button back;
     private TextView loginUser;
 
     private DatabaseReference mRootRef;
@@ -46,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
+        back = findViewById(R.id.back);
         password = findViewById(R.id.password);
         loginUser = findViewById(R.id.login_user);
         register = findViewById(R.id.register);
@@ -76,6 +79,13 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     registerUser(txtUsername, txtName, txtEmail, txtPassword);
                 }
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegisterActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             }
         });
 
