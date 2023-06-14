@@ -3,6 +3,7 @@ package com.ui.event;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,17 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.LoginActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ui.placeholder.EventData;
 import com.ui.placeholder.PlaceholderContent;
-
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,15 +89,48 @@ public class EventFragment extends Fragment {
             eventsRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     int id = 1;
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Log.d("----tag----", document.getId());
                         String title = document.getString("title");
                         String description = document.getString("description");
                         String imageUrl = document.getString("image");
-                        ITEMS.add(new EventData(Integer.toString(id), title, description, imageUrl));
+                        if (LoginActivity.isGuestMode == true)
+                            ITEMS.add(new EventData(Integer.toString(id), title, description, imageUrl, document.getId(), "", false));
+                        else {
+                            ITEMS.add(new EventData(Integer.toString(id), title, description, imageUrl, document.getId(), mAuth.getCurrentUser().getUid(), false));
+                        }
                         id = id + 1;
                     }
-                    recyclerView.setAdapter(new MyEventRecyclerViewAdapter(ITEMS));
+                    if (LoginActivity.isGuestMode == false){
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("myevents").document(mAuth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.exists()){
+                                    ArrayList<String> eventlist = (ArrayList<String>) documentSnapshot.get("eventlist");
+
+                                    for(String event : eventlist){
+                                        Log.d("firebase----",event );
+                                        for(EventData Item : ITEMS) {
+                                            Log.d("firebase----",Item.getDocId() );
+                                            if (event.equals(Item.getDocId())) {
+                                                Item.setShare(true);
+                                                Log.d("firebase----",Item.getName() );
+                                            }
+                                        }
+                                    }
+                                }
+                                recyclerView.setAdapter(new MyEventRecyclerViewAdapter(ITEMS));
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("firebase", "Error getting document", e);
+                            }
+                        });
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

@@ -19,7 +19,7 @@ public class PlaceholderContent {
     /**
      * An array of sample (placeholder) items.
      */
-    public static final List<Event> ITEMS = new ArrayList<>(Arrays.asList(
+    public static List<Event> ITEMS = new ArrayList<>(Arrays.asList(
             new Event("1", "Event 1", "Description 1"),
             new Event("2", "Event 2", "Description 2"),
             new Event("3", "Event 3", "Description 3"),
@@ -38,13 +38,37 @@ public class PlaceholderContent {
             ));
 
     public static class Event {
-        public final String id;
-        public final String name;
-        public final String details;
+        public String id;
+        public String name;
+        public String details;
 
         public Event(String id, String name, String details) {
             this.id = id;
             this.name = name;
+            this.details = details;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDetails() {
+            return details;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setDetails(String details) {
             this.details = details;
         }
 

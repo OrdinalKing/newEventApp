@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ui.TestFragment;
 import com.ui.myEvent.MyEventFragment;
 import com.ui.event.EventFragment;
 
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     ActionBarDrawerToggle drawer_toggle;
 
-    private TextView welcomeText;
     private FirebaseAuth mAuth;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -60,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
             int id = item.getItemId();
             if (id == R.id.myEvents) {
-                replaceFragment(new MyEventFragment());
+                if (LoginActivity.isGuestMode != true)
+                    replaceFragment(new MyEventFragment());
+
             }
                else if (id == R.id.events) {
                 replaceFragment(new EventFragment());
@@ -106,7 +108,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        mAuth.signOut();
+        if (LoginActivity.isGuestMode == true)
+            LoginActivity.isGuestMode = false;
+        else
+            mAuth.signOut();
+
         Toast.makeText(MainActivity.this, "Successfully logged out!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, StartActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -115,21 +121,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setWelcomeName(){
-        String id = mAuth.getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(id).child("username");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("MainActivity", dataSnapshot.getValue().toString());
-                welcomeText = findViewById(R.id.welcomeName);
-                welcomeText.setText("Welcome, " + dataSnapshot.getValue().toString());
 
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        if (LoginActivity.isGuestMode == true)
+        {
+            TextView welcomeText;
+            welcomeText = (TextView)findViewById(R.id.welcomeName);
+            if (welcomeText != null)
+                welcomeText.setText("Welcome, Guest Mode");
+        }
+        else{
+            String id = mAuth.getCurrentUser().getUid();
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(id).child("username");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d("MainActivity", dataSnapshot.getValue().toString());
+                    TextView welcomeText;
+                    welcomeText = (TextView)findViewById(R.id.welcomeName);
+                    welcomeText.setText("Welcome, " + dataSnapshot.getValue().toString());
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
     }
 }

@@ -6,10 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.MainActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/frame_layout"/>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -36,4 +33,9 @@
             android:layout_gravity="start"
             />
     </androidx.drawerlayout.widget.DrawerLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="50dp"
+        android:id="@+id/frame_layout"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,7 +31,7 @@ public class MyEventFragment extends Fragment {
      */
     public MyEventFragment() {
     }
-
+    /*
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static MyEventFragment newInstance(int columnCount) {
@@ -41,7 +41,7 @@ public class MyEventFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
+    */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,12 @@ public class MyEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myevent_list, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.myEventsList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        
+        recyclerView.setAdapter(new MyMyEventRecyclerViewAdapter(PlaceholderContent.ITEMS));
 
+    /*
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -67,6 +72,8 @@ public class MyEventFragment extends Fragment {
             }
             recyclerView.setAdapter(new MyMyEventRecyclerViewAdapter(PlaceholderContent.ITEMS));
         }
+
+     */
         return view;
     }
 }
