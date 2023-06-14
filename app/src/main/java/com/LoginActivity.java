@@ -62,7 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                //startActivity(new Intent(LoginActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                onBackPressed();
             }
         });
 
@@ -80,7 +81,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
     private void loginUser(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

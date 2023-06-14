@@ -85,12 +85,17 @@ public class RegisterActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(RegisterActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                //startActivity(new Intent(RegisterActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                onBackPressed();
             }
         });
 
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Additional custom logic here if needed
+    }
     private void registerUser(String username, String name, String email, String password) {
         pd.setMessage("Please Wait!");
         pd.show();
