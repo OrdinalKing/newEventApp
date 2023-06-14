@@ -13,9 +13,9 @@
             android:icon="@drawable/ic_event"
             android:title="Create Event"
             />
-        <item android:id="@+id/book_ticket_id"
+        <item android:id="@+id/buy_ticket_id"
             android:icon="@drawable/ic_ticket"
-            android:title="Book Tickets"
+            android:title="Buy Tickets"
             />
         <item android:id="@+id/logout_id"
             android:icon="@drawable/ic_logout"

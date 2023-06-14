@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -91,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
                 if (id == R.id.logout_id) {
                     logout();
                 }
+                if (id == R.id.buy_ticket_id) {
+                    buyTicket();
+                }
+
                 return true;
             }
         });
@@ -127,6 +132,20 @@ public class MainActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    private void buyTicket() {
+        Log.d("BuyTicket", "----HERE------");
+        try {
+            String url = "https://www.ticketmaster.at";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            //if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            //}
+        } catch (Exception e) {
+            // Handle the exception here
+            Log.d("BuyTicket", "----ERROR-------");
+        }
     }
 
     private void setWelcomeName(){
