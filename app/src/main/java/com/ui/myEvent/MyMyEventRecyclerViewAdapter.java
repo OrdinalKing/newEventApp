@@ -6,10 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMyeventBinding;
+import com.squareup.picasso.Picasso;
+import com.ui.placeholder.EventData;
 import com.ui.placeholder.PlaceholderContent;
 
 import java.util.List;
@@ -20,9 +23,9 @@ import java.util.List;
  */
 public class MyMyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyMyEventRecyclerViewAdapter.ViewHolder> {
 
-    private final List<PlaceholderContent.Event> mValues;
+    private final List<EventData> mValues;
 
-    public MyMyEventRecyclerViewAdapter(List<PlaceholderContent.Event> items) {
+    public MyMyEventRecyclerViewAdapter(List<EventData> items) {
         mValues = items;
     }
 
@@ -37,6 +40,7 @@ public class MyMyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyMyEvent
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.mIdView.setText(mValues.get(position).name);
         holder.mContentView.setText(mValues.get(position).details);
+        Picasso.get().load(mValues.get(position).imageUrl).into(holder.eventImageSrc);
     }
 
     @Override
@@ -48,10 +52,13 @@ public class MyMyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyMyEvent
         public final TextView mIdView;
         public final TextView mContentView;
 
+        public final ImageView eventImageSrc;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mIdView = itemView.findViewById(R.id.eventHeadline);
             mContentView = itemView.findViewById(R.id.eventDetails);
+            eventImageSrc = itemView.findViewById(R.id.eventImageSrc);
         }
 
     }

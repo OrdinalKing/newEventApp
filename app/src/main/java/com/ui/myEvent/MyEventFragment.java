@@ -3,17 +3,28 @@ package com.ui.myEvent;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.ui.placeholder.EventData;
 import com.ui.placeholder.PlaceholderContent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -57,8 +68,53 @@ public class MyEventFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_myevent_list, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.myEventsList);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        
-        recyclerView.setAdapter(new MyMyEventRecyclerViewAdapter(PlaceholderContent.ITEMS));
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = mAuth.getCurrentUser().getUid();
+        List<EventData> ITEMS = new ArrayList<>();
+        db.collection("myevents").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                ArrayList<String> eventlist;
+                if (documentSnapshot.exists()) {
+                    eventlist = (ArrayList<String>) documentSnapshot.get("eventlist");
+
+                    for(String event : eventlist) {
+                        db.collection("events").document(event).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                String title = documentSnapshot.getString("title");
+                                String description = documentSnapshot.getString("description");
+                                String imageUrl = documentSnapshot.getString("image");
+                                ITEMS.add(new EventData(Integer.toString(ITEMS.size()), title, description, imageUrl, event, userId, false));
+
+                                ///  Last event  ///
+                                if (ITEMS.size() == eventlist.size())
+                                {
+                                    recyclerView.setAdapter(new MyMyEventRecyclerViewAdapter(ITEMS));
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("firebase","Error getting document", e);
+                            }
+                        });
+
+                    }
+                }
+                else{
+                    recyclerView.setAdapter(new MyMyEventRecyclerViewAdapter(ITEMS));
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("firebase","Error getting document", e);
+            }
+        });
+
 
     /*
         // Set the adapter

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.LoginActivity;
+import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,7 +46,7 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new ViewHolder(FragmentEventBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_event, parent, false));
 
     }
 
@@ -81,15 +82,20 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         public final ImageView eventImageSrc;
         public final Button shareButton;
         public final ImageView shareImage;
+
+        //public final RecyclerView.Adapter adapter;
         public EventData mItem;
 
-        public ViewHolder(FragmentEventBinding binding) {
-            super(binding.getRoot());
-            eventHeadline = binding.eventHeadline;
-            eventDetails = binding.eventDetails;
-            eventImageSrc = binding.eventImageSrc;
-            shareButton = binding.shareButton;
-            shareImage = binding.shareImage;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            //adapter = ((RecyclerView) itemView.getParent()).getAdapter();
+
+            eventHeadline = itemView.findViewById(R.id.eventHeadline);
+            eventDetails = itemView.findViewById(R.id.eventDetails);
+            eventImageSrc = itemView.findViewById(R.id.eventImageSrc);
+            shareButton = itemView.findViewById(R.id.shareButton);
+            shareImage = itemView.findViewById(R.id.shareImage);
 
             shareButton.setOnClickListener(this);
         }
@@ -150,6 +156,7 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
                         }
                     });
                     mItem.setShare(true);
+                    //adapter.notifyItemChanged(position);
                 }
             }
         }
