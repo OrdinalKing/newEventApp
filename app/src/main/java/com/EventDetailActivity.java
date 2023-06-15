@@ -52,12 +52,15 @@ public class EventDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        if (LoginActivity.isGuestMode == true)
+            reviewButton.setVisibility(View.GONE);
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
+
         db.collection("reviews").document(eventId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -82,7 +85,7 @@ public class EventDetailActivity extends AppCompatActivity {
                     }
 
                     reviewList.setAdapter(new MyReviewAdapter(ITEMS));
-                    if (isExist == true || LoginActivity.isGuestMode == true)
+                    if (isExist == true)
                         reviewButton.setVisibility(View.GONE);
                 }
             }
