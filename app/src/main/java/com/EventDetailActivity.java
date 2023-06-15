@@ -62,7 +62,12 @@ public class EventDetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()){
-                    String userId = mAuth.getCurrentUser().getUid();
+                    String userId;
+                    if (LoginActivity.isGuestMode == true)
+                        userId="";
+                    else
+                        userId = mAuth.getCurrentUser().getUid();
+
                     Boolean isExist = false;
                     HashMap<String, Object> reviewDatas = (HashMap<String, Object>) documentSnapshot.getData();
                     List<ReviewData> ITEMS = new ArrayList<>();
@@ -77,7 +82,7 @@ public class EventDetailActivity extends AppCompatActivity {
                     }
 
                     reviewList.setAdapter(new MyReviewAdapter(ITEMS));
-                    if (isExist == true)
+                    if (isExist == true || LoginActivity.isGuestMode == true)
                         reviewButton.setVisibility(View.GONE);
                 }
             }
@@ -109,7 +114,7 @@ public class EventDetailActivity extends AppCompatActivity {
                     long timestampMillis = newdate.getTime();
                     long currentMillis = System.currentTimeMillis();
 
-                    if (currentMillis > timestampMillis) {
+                    if (currentMillis < timestampMillis) {
                         reviewButton.setVisibility(View.GONE);
                     } else {
 
