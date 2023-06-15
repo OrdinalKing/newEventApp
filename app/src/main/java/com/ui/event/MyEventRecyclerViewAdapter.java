@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,14 +36,18 @@ import java.util.Map;
  * {@link RecyclerView.Adapter} that can display a {@link}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecyclerViewAdapter.ViewHolder> {
+public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecyclerViewAdapter.ViewHolder>  {
 
     private final List<EventData> mValues;
+    private OnClickListener onClickListener;
 
     public MyEventRecyclerViewAdapter(List<EventData> items) {
         mValues = items;
     }
 
+    public interface OnClickListener {
+        void onClick(EventData eventData);
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -56,6 +61,16 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         holder.eventHeadline.setText(mValues.get(position).name);
         holder.eventDetails.setText(mValues.get(position).details);
         Picasso.get().load(mValues.get(position).imageUrl).into(holder.eventImageSrc);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onClickListener != null) {
+                    onClickListener.onClick(holder.mItem);
+                }
+            }
+        });
+
         if (LoginActivity.isGuestMode == true){
             holder.shareImage.setVisibility(View.GONE);
             holder.shareButton.setVisibility(View.GONE);
@@ -70,7 +85,9 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
             }
         }
     }
-
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
     @Override
     public int getItemCount() {
         return mValues.size();

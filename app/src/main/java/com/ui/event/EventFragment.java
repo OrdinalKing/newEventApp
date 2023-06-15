@@ -1,6 +1,7 @@
 package com.ui.event;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.EventDetailActivity;
 import com.LoginActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -126,6 +128,14 @@ public class EventFragment extends Fragment {
                                 }
                                 adapter = new MyEventRecyclerViewAdapter(ITEMS);
                                 recyclerView.setAdapter(adapter);
+                                adapter.setOnClickListener(new MyEventRecyclerViewAdapter.OnClickListener() {
+                                    @Override
+                                    public void onClick(EventData eventData) {
+                                        EventDetailActivity.eventId = eventData.getDocId();
+                                        Intent intent = new Intent(getActivity(), EventDetailActivity.class);
+                                        startActivity(intent);
+                                    }
+                                });
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

@@ -29,6 +29,13 @@
             android:layout_height = "50dp"
             android:text ="Register"
             android:id="@+id/register"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text ="GUEST"
+            android:padding = "10dp"
+            android:id="@+id/guest" />
 
     </LinearLayout>
 </RelativeLayout>
