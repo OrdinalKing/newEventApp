@@ -70,8 +70,12 @@ public class EventDetailActivity extends AppCompatActivity {
                         String key = entry.getKey();
                         if (key.equals(userId)) isExist = true;
                         ArrayList<String> reviewData = (ArrayList<String>)entry.getValue();
+                        Log.d("Tag",key);
+                        Log.d("Tag",reviewData.get(0));
+                        Log.d("Tag",reviewData.get(1));
                         ITEMS.add(new ReviewData(reviewData.get(0), reviewData.get(1)));
                     }
+
                     reviewList.setAdapter(new MyReviewAdapter(ITEMS));
                     if (isExist == true)
                         reviewButton.setVisibility(View.GONE);

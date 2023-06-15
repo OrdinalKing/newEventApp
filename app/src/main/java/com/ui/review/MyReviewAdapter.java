@@ -17,7 +17,7 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
     private final List<ReviewData> mValues;
 
     public MyReviewAdapter(List<ReviewData> items) {
-        mValues = items;
+        this.mValues = items;
     }
 
     @Override

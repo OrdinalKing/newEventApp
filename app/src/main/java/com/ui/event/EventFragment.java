@@ -147,6 +147,14 @@ public class EventFragment extends Fragment {
                     else {
                         adapter = new MyEventRecyclerViewAdapter(ITEMS);
                         recyclerView.setAdapter(adapter);
+                        adapter.setOnClickListener(new MyEventRecyclerViewAdapter.OnClickListener() {
+                            @Override
+                            public void onClick(EventData eventData) {
+                                EventDetailActivity.eventId = eventData.getDocId();
+                                Intent intent = new Intent(getActivity(), EventDetailActivity.class);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {

@@ -31,9 +31,14 @@ import java.util.List;
 public class MyMyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyMyEventRecyclerViewAdapter.ViewHolder> {
 
     private final List<EventData> mValues;
+    private OnClickListener onClickListener;
 
     public MyMyEventRecyclerViewAdapter(List<EventData> items) {
         mValues = items;
+    }
+
+    public interface OnClickListener {
+        void onClick(EventData eventData);
     }
 
     @Override
@@ -49,8 +54,18 @@ public class MyMyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyMyEvent
         holder.mIdView.setText(mValues.get(position).name);
         holder.mContentView.setText(mValues.get(position).details);
         Picasso.get().load(mValues.get(position).imageUrl).into(holder.eventImageSrc);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onClickListener != null) {
+                    onClickListener.onClick(holder.mItems.get(position));
+                }
+            }
+        });
     }
-
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
     @Override
     public int getItemCount() {
         return mValues.size();
