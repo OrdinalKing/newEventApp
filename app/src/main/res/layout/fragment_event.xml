@@ -35,22 +35,33 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem" />
-
-        <Button
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:text = "share"
-            android:layout_marginTop ="10dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:id="@+id/shareButton"
-            />
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src ="@drawable/favorite"
-            android:layout_gravity="end"
-            android:visibility="gone"
-            android:id="@+id/shareImage"
-            />
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <Button
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:text = "favorite"
+                android:id="@+id/shareButton"
+                />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src ="@drawable/favorite"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:id="@+id/shareImage"
+                />
+            <Button
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:text = "share"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/shareButton1"
+                />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

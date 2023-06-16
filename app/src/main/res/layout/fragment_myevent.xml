@@ -34,14 +34,26 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem" />
-        <Button
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:text = "delete"
-            android:layout_marginTop ="10dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:id="@+id/deleteButton"
-            />
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <Button
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:text = "delete"
+                android:id="@+id/deleteButton"
+                />
+            <Button
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:text = "share"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/shareButton1"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>
