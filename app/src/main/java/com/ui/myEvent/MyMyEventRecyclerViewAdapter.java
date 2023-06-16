@@ -3,6 +3,9 @@ package com.ui.myEvent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMyeventBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.ui.placeholder.EventData;
@@ -31,10 +35,13 @@ import java.util.List;
 public class MyMyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyMyEventRecyclerViewAdapter.ViewHolder> {
 
     private final List<EventData> mValues;
+    private final Context context;
     private OnClickListener onClickListener;
 
-    public MyMyEventRecyclerViewAdapter(List<EventData> items) {
-        mValues = items;
+    public MyMyEventRecyclerViewAdapter(Context context, List<EventData> items) {
+
+        this.mValues = items;
+        this.context = context;
     }
 
     public interface OnClickListener {
@@ -77,6 +84,7 @@ public class MyMyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyMyEvent
 
         public final ImageView eventImageSrc;
         public final Button deleteButton;
+        public final Button shareButton1;
 
         public List<EventData> mItems;
 
@@ -86,7 +94,9 @@ public class MyMyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyMyEvent
             mContentView = itemView.findViewById(R.id.eventDetails);
             eventImageSrc = itemView.findViewById(R.id.eventImageSrc);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            shareButton1 = itemView.findViewById(R.id.shareButton1);
             deleteButton.setOnClickListener(this);
+            shareButton1.setOnClickListener(this);
         }
 
         @Override
@@ -114,6 +124,84 @@ public class MyMyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyMyEvent
                     }
                 });
                 MyEventFragment.adapter.notifyDataSetChanged();
+            }
+            if (v == shareButton1) {
+                Log.d("tag","I am here----------------------");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetTheme);
+                View sheetview = LayoutInflater.from(context.getApplicationContext()).inflate(R.layout.bottom_sheet_layout, null);
+                bottomSheetDialog.setContentView(sheetview);
+                bottomSheetDialog.show();
+                sheetview.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.hide();
+                    }
+                });
+                sheetview.findViewById(R.id.whatsapp).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://www.whatsapp.com/";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
+                sheetview.findViewById(R.id.instagram).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://www.instagram.com/";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
+                sheetview.findViewById(R.id.facebook).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://www.facebook.com/";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
+                sheetview.findViewById(R.id.gmail).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://mail.google.com/";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
+                sheetview.findViewById(R.id.message).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://messages.google.com/web";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
             }
         }
 

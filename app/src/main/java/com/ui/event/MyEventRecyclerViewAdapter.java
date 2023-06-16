@@ -1,11 +1,16 @@
 package com.ui.event;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,7 @@ import com.LoginActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
@@ -39,10 +45,12 @@ import java.util.Map;
 public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecyclerViewAdapter.ViewHolder>  {
 
     private final List<EventData> mValues;
+    private Context context;
     private OnClickListener onClickListener;
 
-    public MyEventRecyclerViewAdapter(List<EventData> items) {
-        mValues = items;
+    public MyEventRecyclerViewAdapter(Context context, List<EventData> items) {
+        this.mValues = items;
+        this.context = context;
     }
 
     public interface OnClickListener {
@@ -98,6 +106,8 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         public final TextView eventDetails;
         public final ImageView eventImageSrc;
         public final Button shareButton;
+
+        public final Button shareButton1;
         public final ImageView shareImage;
 
         //public final RecyclerView.Adapter adapter;
@@ -113,8 +123,10 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
             eventImageSrc = itemView.findViewById(R.id.eventImageSrc);
             shareButton = itemView.findViewById(R.id.shareButton);
             shareImage = itemView.findViewById(R.id.shareImage);
+            shareButton1 = itemView.findViewById(R.id.shareButton1);
 
             shareButton.setOnClickListener(this);
+            shareButton1.setOnClickListener(this);
         }
 
         @Override
@@ -175,6 +187,84 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
                     mItem.setShare(true);
                     EventFragment.adapter.notifyItemChanged(position);
                 }
+            }
+            if (v == shareButton1) {
+                Log.d("tag","I am here----------------------");
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetTheme);
+                View sheetview = LayoutInflater.from(context.getApplicationContext()).inflate(R.layout.bottom_sheet_layout, null);
+                bottomSheetDialog.setContentView(sheetview);
+                bottomSheetDialog.show();
+                sheetview.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.hide();
+                    }
+                });
+                sheetview.findViewById(R.id.whatsapp).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://www.whatsapp.com/";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
+                sheetview.findViewById(R.id.instagram).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://www.instagram.com/";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
+                sheetview.findViewById(R.id.facebook).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://www.facebook.com/";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
+                sheetview.findViewById(R.id.gmail).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://mail.google.com/";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
+                sheetview.findViewById(R.id.message).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String url = "https://messages.google.com/web";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            context.startActivity(intent);
+                        } catch (Exception e) {
+                            // Handle the exception here
+                            Log.d("Whatsapp", "----ERROR-------");
+                        }
+                    }
+                });
             }
         }
         @Override

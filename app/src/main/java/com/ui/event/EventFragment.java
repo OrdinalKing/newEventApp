@@ -126,7 +126,7 @@ public class EventFragment extends Fragment {
                                         }
                                     }
                                 }
-                                adapter = new MyEventRecyclerViewAdapter(ITEMS);
+                                adapter = new MyEventRecyclerViewAdapter(context, ITEMS);
                                 recyclerView.setAdapter(adapter);
                                 adapter.setOnClickListener(new MyEventRecyclerViewAdapter.OnClickListener() {
                                     @Override
@@ -145,7 +145,7 @@ public class EventFragment extends Fragment {
                         });
                     }
                     else {
-                        adapter = new MyEventRecyclerViewAdapter(ITEMS);
+                        adapter = new MyEventRecyclerViewAdapter(context, ITEMS);
                         recyclerView.setAdapter(adapter);
                         adapter.setOnClickListener(new MyEventRecyclerViewAdapter.OnClickListener() {
                             @Override

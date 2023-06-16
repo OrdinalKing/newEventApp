@@ -97,7 +97,7 @@ public class MyEventFragment extends Fragment {
                                 ///  Last event  ///
                                 if (ITEMS.size() == eventlist.size())
                                 {
-                                    adapter = new MyMyEventRecyclerViewAdapter(ITEMS);
+                                    adapter = new MyMyEventRecyclerViewAdapter(view.getContext(), ITEMS);
                                     recyclerView.setAdapter(adapter);
                                     adapter.setOnClickListener(new MyMyEventRecyclerViewAdapter.OnClickListener() {
                                         @Override
@@ -119,7 +119,7 @@ public class MyEventFragment extends Fragment {
                     }
                 }
                 else{
-                    adapter = new MyMyEventRecyclerViewAdapter(ITEMS);
+                    adapter = new MyMyEventRecyclerViewAdapter(view.getContext(), ITEMS);
                     recyclerView.setAdapter(adapter);
                     adapter.setOnClickListener(new MyMyEventRecyclerViewAdapter.OnClickListener() {
                         @Override
